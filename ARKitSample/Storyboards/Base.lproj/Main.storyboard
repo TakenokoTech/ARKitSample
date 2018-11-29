@@ -29,11 +29,16 @@
                                     <constraint firstAttribute="height" constant="60" id="zy8-Rm-HFO"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wo8-Un-heE">
-                                <rect key="frame" x="166" y="47" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wo8-Un-heE">
+                                <rect key="frame" x="0.0" y="68" width="375" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Vc-ki-1fl">
+                                <rect key="frame" x="0.0" y="97" width="375" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vBc-bH-BCp">
@@ -49,22 +54,29 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
+                            <constraint firstItem="wo8-Un-heE" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="JgC-Mj-yvR"/>
+                            <constraint firstItem="wo8-Un-heE" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="48" id="Umt-Xk-0YR"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="VpT-BR-CcM"/>
+                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="0Vc-ki-1fl" secondAttribute="trailing" id="Vs7-aF-CaU"/>
                             <constraint firstItem="eT2-C3-BdG" firstAttribute="centerY" secondItem="U0K-SW-4ec" secondAttribute="centerY" id="WP3-yN-ctJ"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
+                            <constraint firstItem="wo8-Un-heE" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="jKE-Dh-6a4"/>
                             <constraint firstItem="eT2-C3-BdG" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="qhc-fy-C6u"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
+                            <constraint firstItem="0Vc-ki-1fl" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="wm6-Cp-3CX"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
                         <outlet property="imageMaker" destination="eT2-C3-BdG" id="Mde-WQ-YtK"/>
                         <outlet property="label" destination="wo8-Un-heE" id="H4a-52-NTw"/>
+                        <outlet property="label2" destination="0Vc-ki-1fl" id="0sr-dU-A3R"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="140" y="133.5832083958021"/>
         </scene>
     </scenes>
 </document>

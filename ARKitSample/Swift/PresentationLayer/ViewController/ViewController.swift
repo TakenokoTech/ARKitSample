@@ -12,17 +12,18 @@ import ARKit
 import AVKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet weak var imageMaker: UIImageView!
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var label2: UILabel!
     
     private let viewModel: ViewModel = ViewModel()
     private var recordingButton: RecordingButton!
     private var markerMode = MarkerMode.white
     private var timer: Timer!
     private var planes: [SCNNode] = []
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.delegate = self
@@ -107,7 +108,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
         }
     }
-
+    
     // MARK: - ARSCNViewDelegate
     
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
@@ -116,15 +117,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
-        let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
-        let planeMaterial = SCNMaterial()
-        planeMaterial.diffuse.contents = UIColor.green.withAlphaComponent(0.5)
-        plane.materials = [planeMaterial]
-        let planeNode = SCNNode(geometry: plane)
-        planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
-        planeNode.transform =  SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
-        node.addChildNode(planeNode)
+        viewModel.renderAnchor(node, anchor)
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {

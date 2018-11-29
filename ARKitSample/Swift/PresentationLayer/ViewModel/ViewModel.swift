@@ -99,6 +99,7 @@ class ViewModel {
             refreshCylinderNode(sceneView, endPosition: endPosition)
         }
     }
+    
     // 画面の中央を取得する
     func getCenter(_ sceneView: ARSCNView) -> SCNVector3? {
         let touchLocation = sceneView.center
@@ -127,69 +128,47 @@ class ViewModel {
         cylinderNode = createCylinderNode(startPosition: startPosition, endPosition: endPosition, radius: 0.001, color: UIColor.yellow, transparency: 0.5)
         sceneView.scene.rootNode.addChildNode(cylinderNode!)
     }
+    
+    //
+    func renderAnchor(_ node: SCNNode, _ anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        let planeNode = SCNNode(geometry: CustomPlane.greenSheet(anchor: planeAnchor))
+        planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
+        planeNode.transform =  SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
+        
+        let textNode = SCNNode(geometry:  CustomPlane.text(anchor: planeAnchor))
+        textNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
+        textNode.transform =  SCNMatrix4MakeRotation(/* -Float.pi / 2 */0, 0.3, 0, 0)
+        
+        node.addChildNode(planeNode)
+        node.addChildNode(textNode)
+    }
+    
+
 }
 
-extension RecordingButton: RPPreviewViewControllerDelegate {
-    func previewControllerDidFinish(_ previewController: RPPreviewViewController) {
-        DispatchQueue.main.async { [unowned previewController] in
-            previewController.dismiss(animated: true, completion: nil)
-        }
+///
+///
+///
+class CustomPlane {
+    static func greenSheet(anchor: ARPlaneAnchor) -> SCNPlane {
+        // Maaterial
+        let planeMaterial = SCNMaterial()
+        planeMaterial.diffuse.contents = UIColor.green.withAlphaComponent(0.5)
+        // Plane
+        let plane = SCNPlane(width: CGFloat(anchor.extent.x), height: CGFloat(anchor.extent.z))
+        plane.materials = [planeMaterial]
+        return plane;
+    }
+    
+    static func text(anchor: ARPlaneAnchor) -> SCNText {
+        let pos = String.init(format: "( %.2f, %.2f)", arguments: [CGFloat(anchor.extent.x), CGFloat(anchor.extent.z)])
+        let text = SCNText(string: pos, extrusionDepth: 0.001)
+        text.font = UIFont(name: "HiraKakuProN-W6", size: 0.1);
+        return text
     }
 }
-class RecordingButton: UIButton {
-    var isRecording = false
-    let height:CGFloat = 50.0
-    let width:CGFloat = 100.0
-    let viewController: UIViewController!
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    init(_ viewController: UIViewController) {
-        self.viewController = viewController
-        
-        super.init(frame: CGRect(x:0, y:0, width:width, height:height))
-        
-        //        layer.position = CGPoint(x: viewController.view.frame.width/2, y:viewController.view.frame.height - height)
-        layer.position = CGPoint(x: width/2, y:viewController.view.frame.height - height)
-        
-        layer.cornerRadius = 10
-        layer.borderWidth = 1
-        setTitleColor(UIColor.white, for: .normal)
-        
-        addTarget(self, action: #selector(tapped), for:.touchUpInside)
-        
-        setAppearance()
-        viewController.view.addSubview(self)
-    }
-    
-    @objc func tapped() {
-        if !isRecording {
-            isRecording = true
-            RPScreenRecorder.shared().startRecording(handler: { (error) in
-                print(error)
-            })
-        } else {
-            isRecording = false
-            RPScreenRecorder.shared().stopRecording(handler: { (previewViewController, error) in
-                previewViewController?.previewControllerDelegate = self
-                self.viewController.present(previewViewController!, animated: true, completion: nil)
-            })
-        }
-        setAppearance()
-    }
-    
-    
-    func setAppearance() {
-        var alpha:CGFloat = 1.0
-        var title = "REC"
-        if isRecording {
-            title = ""
-            alpha = 0
-        }
-        setTitle(title, for: .normal)
-        backgroundColor = UIColor(red: 0.7, green: 0, blue: 0, alpha: alpha)
-        layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha).cgColor
-    }
-}
+
+
+
