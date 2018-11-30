@@ -111,6 +111,21 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // MARK: - ARSCNViewDelegate
     
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        guard let cuptureImage = sceneView.session.currentFrame?.capturedImage else {
+            return
+        }
+        // PixelBuffer を CIImage に変換しフィルターをかける
+        let ciImage = CIImage.init(cvPixelBuffer: cuptureImage)
+        let filter:CIFilter = CIFilter(name: "CIEdges")!
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        //　カメラ画像はホーム右のランドスケープの状態で画像が渡されるため、CGImagePropertyOrientation(rawValue: 6) でポートレートで正しい向きに表示されるよう変換
+        let result = filter.outputImage!.oriented(CGImagePropertyOrientation(rawValue: 6)!)
+        if let cgImage = CIContext().createCGImage(result, from: result.extent) {
+            sceneView.scene.background.contents = cgImage
+        }
+    }
+    
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
         return node

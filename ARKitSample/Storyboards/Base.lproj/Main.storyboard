@@ -22,11 +22,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </arscnView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eT2-C3-BdG">
-                                <rect key="frame" x="157.5" y="303.5" width="60" height="60"/>
+                                <rect key="frame" x="179.5" y="325.5" width="16" height="16"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="0.11647947309999999" alpha="0.29979130993150682" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="lWN-Mw-Pkx"/>
-                                    <constraint firstAttribute="height" constant="60" id="zy8-Rm-HFO"/>
+                                    <constraint firstAttribute="width" constant="16" id="lWN-Mw-Pkx"/>
+                                    <constraint firstAttribute="height" constant="16" id="zy8-Rm-HFO"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wo8-Un-heE">
@@ -35,7 +35,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Vc-ki-1fl">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Vc-ki-1fl">
                                 <rect key="frame" x="0.0" y="97" width="375" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -62,6 +62,7 @@
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
                             <constraint firstItem="wo8-Un-heE" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="jKE-Dh-6a4"/>
                             <constraint firstItem="eT2-C3-BdG" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="qhc-fy-C6u"/>
+                            <constraint firstItem="0Vc-ki-1fl" firstAttribute="top" secondItem="wo8-Un-heE" secondAttribute="bottom" constant="8" id="qwr-RO-Tgz"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
                             <constraint firstItem="0Vc-ki-1fl" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="wm6-Cp-3CX"/>
                         </constraints>

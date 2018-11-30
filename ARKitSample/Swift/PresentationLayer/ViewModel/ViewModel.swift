@@ -18,6 +18,11 @@ enum MarkerMode {
     case none
 }
 
+enum CollisionBitmask: Int {
+    case ball = 1
+    case floor = 2
+}
+
 class ViewModel {
     
     private var _startPosition: SCNVector3!
@@ -132,41 +137,97 @@ class ViewModel {
     //
     func renderAnchor(_ node: SCNNode, _ anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        var cnode = node.childNodes
+        cnode.removeAll()
         
-        let planeNode = SCNNode(geometry: CustomPlane.greenSheet(anchor: planeAnchor))
+        let planeNode = CustomPlane.greenSheet(anchor: planeAnchor)
         planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
         planeNode.transform =  SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
-        
-        let textNode = SCNNode(geometry:  CustomPlane.text(anchor: planeAnchor))
+        planeNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        planeNode.physicsBody?.contactTestBitMask = CollisionBitmask.ball.rawValue
+        planeNode.physicsBody?.collisionBitMask = CollisionBitmask.ball.rawValue
+        planeNode.physicsBody?.categoryBitMask = CollisionBitmask.floor.rawValue
+        node.addChildNode(planeNode)
+
+        let textNode = CustomPlane.text(anchor: planeAnchor)
         textNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
         textNode.transform =  SCNMatrix4MakeRotation(/* -Float.pi / 2 */0, 0.3, 0, 0)
-        
-        node.addChildNode(planeNode)
-        node.addChildNode(textNode)
-    }
+        // node.addChildNode(textNode)
     
-
+        let size: Float = 0.1;
+        for indexX in 0...3 {
+            for indexY in 0...3 {
+                for indexZ in 0...3 {
+                    let cubeNode = CustomPlane.cubeXcm(size: size)
+                    cubeNode.position = SCNVector3Make(planeAnchor.center.x + Float(indexX) * size, Float(indexY)*size, planeAnchor.center.z + Float(indexZ)*size)
+                    // node.addChildNode(cubeNode)
+                }
+            }
+        }
+        
+        let ballNode = CustomPlane.baseball()
+        ballNode.position = SCNVector3Make(planeAnchor.center.x, 0.3, planeAnchor.center.z)
+        ballNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        ballNode.physicsBody?.categoryBitMask = CollisionBitmask.ball.rawValue
+        node.addChildNode(ballNode)
+    }
 }
 
-///
-///
-///
+// MARK: - Custom Plane
+
 class CustomPlane {
-    static func greenSheet(anchor: ARPlaneAnchor) -> SCNPlane {
+    
+    static func cubeXcm(size: Float) -> SCNNode {
+        // Maaterial
+        let material = SCNMaterial()
+        material.diffuse.contents = randomColor().withAlphaComponent(0.1)
+        // Plane
+        let node = SCNNode()
+        node.geometry = SCNBox(width: CGFloat(size), height: CGFloat(size), length: CGFloat(size), chamferRadius: 0)
+        node.geometry?.materials = [material]
+        return node
+    }
+    
+    static func greenSheet(anchor: ARPlaneAnchor) -> SCNNode {
         // Maaterial
         let planeMaterial = SCNMaterial()
-        planeMaterial.diffuse.contents = UIColor.green.withAlphaComponent(0.5)
+        planeMaterial.diffuse.contents = UIColor.green.withAlphaComponent(0.9)
         // Plane
         let plane = SCNPlane(width: CGFloat(anchor.extent.x), height: CGFloat(anchor.extent.z))
         plane.materials = [planeMaterial]
-        return plane;
+        return SCNNode(geometry: plane);
     }
     
-    static func text(anchor: ARPlaneAnchor) -> SCNText {
+    static func text(anchor: ARPlaneAnchor) -> SCNNode {
         let pos = String.init(format: "( %.2f, %.2f)", arguments: [CGFloat(anchor.extent.x), CGFloat(anchor.extent.z)])
         let text = SCNText(string: pos, extrusionDepth: 0.001)
         text.font = UIFont(name: "HiraKakuProN-W6", size: 0.1);
-        return text
+        return SCNNode(geometry: text)
+    }
+    
+    static func baseball() -> SCNNode{
+        // Maaterial
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.white.withAlphaComponent(0.9)
+        // Plane
+        let node = SCNNode()
+        node.geometry = SCNSphere(radius: CGFloat(0.074))
+        node.geometry?.materials = [material]
+        return node
+    }
+    
+    private static func randomColor() -> UIColor {
+        switch Int.random(in: 1 ... 10) {
+        case 1: return UIColor.red
+        case 2: return UIColor.green
+        case 3: return UIColor.blue
+        case 4: return UIColor.cyan
+        case 5: return UIColor.yellow
+        case 6: return UIColor.magenta
+        case 7: return UIColor.orange
+        case 8: return UIColor.purple
+        default: return UIColor.brown
+        }
     }
 }
 
