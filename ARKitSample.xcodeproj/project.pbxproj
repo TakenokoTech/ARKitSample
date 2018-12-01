@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0739A71921B2E1CA00C3B5B6 /* ARLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0739A71821B2E1CA00C3B5B6 /* ARLog.swift */; };
 		07EE8E3521AEC21D00AA4FD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE8E3421AEC21D00AA4FD8 /* AppDelegate.swift */; };
 		07EE8E3721AEC21D00AA4FD8 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 07EE8E3621AEC21D00AA4FD8 /* art.scnassets */; };
 		07EE8E3921AEC21D00AA4FD8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE8E3821AEC21D00AA4FD8 /* ViewController.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0739A71821B2E1CA00C3B5B6 /* ARLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARLog.swift; sourceTree = "<group>"; };
 		07EE8E3121AEC21D00AA4FD8 /* ARKitSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARKitSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07EE8E3421AEC21D00AA4FD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07EE8E3621AEC21D00AA4FD8 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -80,6 +82,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0739A71721B2E1A800C3B5B6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0739A71821B2E1CA00C3B5B6 /* ARLog.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		07EE8E2821AEC21D00AA4FD8 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +152,7 @@
 		07EE8E6521AEC76B00AA4FD8 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				0739A71721B2E1A800C3B5B6 /* Utils */,
 				07EE8E6621AEC78700AA4FD8 /* Application */,
 				07EE8E6721AEC7C400AA4FD8 /* PresentationLayer */,
 			);
@@ -315,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07EE8E3921AEC21D00AA4FD8 /* ViewController.swift in Sources */,
+				0739A71921B2E1CA00C3B5B6 /* ARLog.swift in Sources */,
 				07EE8E6D21B0251E00AA4FD8 /* RecordingButton.swift in Sources */,
 				07EE8E6B21AECED400AA4FD8 /* ViewModel.swift in Sources */,
 				07EE8E3521AEC21D00AA4FD8 /* AppDelegate.swift in Sources */,

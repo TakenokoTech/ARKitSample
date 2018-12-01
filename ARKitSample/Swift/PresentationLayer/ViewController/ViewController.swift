@@ -92,6 +92,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         viewModel.endMeasure(sceneView)
     }
     
+    @IBAction func createBall(_ sender: Any) {
+        ARLog.funcIn(); defer { ARLog.funcOut() }
+        let boxGeometry = SCNSphere(radius: CGFloat(0.05))
+//        let boxGeometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
+        let material = SCNMaterial()
+        material.diffuse.contents = UIImage(named: "block")
+        boxGeometry.materials = [material]
+        let boxNode = SCNNode(geometry: boxGeometry)
+        boxNode.position = SCNVector3(
+            0, // hitResult.worldTransform.columns.3.x,
+            0.8, // hitResult.worldTransform.columns.3.y + 0.20,
+            0 // hitResult.worldTransform.columns.3.z
+        )
+        boxNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: boxGeometry, options: nil))
+        boxNode.physicsBody?.categoryBitMask = CollisionBitmask.ball.rawValue
+        sceneView.scene.rootNode.addChildNode(boxNode)
+    }
+    
     // 計測中に円柱の描画を更新する
     @objc func update(tm: Timer) {
         if viewModel.isMeasuring {
@@ -112,6 +130,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - ARSCNViewDelegate
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        // ARLog.funcIn(); defer { ARLog.funcOut() }
         guard let cuptureImage = sceneView.session.currentFrame?.capturedImage else {
             return
         }
@@ -122,16 +141,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         //　カメラ画像はホーム右のランドスケープの状態で画像が渡されるため、CGImagePropertyOrientation(rawValue: 6) でポートレートで正しい向きに表示されるよう変換
         let result = filter.outputImage!.oriented(CGImagePropertyOrientation(rawValue: 6)!)
         if let cgImage = CIContext().createCGImage(result, from: result.extent) {
-            sceneView.scene.background.contents = cgImage
+            // sceneView.scene.background.contents = cgImage
         }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        // ARLog.funcIn(); defer { ARLog.funcOut() }
         let node = SCNNode()
         return node
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        // ARLog.funcIn(); defer { ARLog.funcOut() }
         viewModel.renderAnchor(node, anchor)
     }
     

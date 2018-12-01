@@ -135,10 +135,16 @@ class ViewModel {
     }
     
     //
+    var lastNode: SCNNode? = nil
     func renderAnchor(_ node: SCNNode, _ anchor: ARAnchor) {
+        ARLog.funcIn(); defer { ARLog.funcOut() }
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
-        var cnode = node.childNodes
-        cnode.removeAll()
+        print("x: ", planeAnchor.center.x)
+        print("y: ", planeAnchor.center.y)
+        print("z: ", planeAnchor.center.z)
+        var cnode = lastNode?.childNodes
+        cnode?.removeAll()
+        ARLog.debug("\(cnode?.count)")
         
         let planeNode = CustomPlane.greenSheet(anchor: planeAnchor)
         planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
@@ -154,22 +160,23 @@ class ViewModel {
         textNode.transform =  SCNMatrix4MakeRotation(/* -Float.pi / 2 */0, 0.3, 0, 0)
         // node.addChildNode(textNode)
     
-        let size: Float = 0.1;
-        for indexX in 0...3 {
-            for indexY in 0...3 {
-                for indexZ in 0...3 {
-                    let cubeNode = CustomPlane.cubeXcm(size: size)
-                    cubeNode.position = SCNVector3Make(planeAnchor.center.x + Float(indexX) * size, Float(indexY)*size, planeAnchor.center.z + Float(indexZ)*size)
-                    // node.addChildNode(cubeNode)
-                }
-            }
-        }
+        let size: Float = 0.5 ;
+        for indexX in -10...10 { for indexY in 0...0 { for indexZ in -10...10 {
+            let (cubeNode, physics) = CustomPlane.cubeXcm(size: size)
+            cubeNode.position = SCNVector3Make(planeAnchor.center.x + Float(indexX) * size, Float(indexY)*size, planeAnchor.center.z + Float(indexZ)*size)
+            cubeNode.physicsBody = SCNPhysicsBody(type: .static, shape: physics)
+            cubeNode.physicsBody?.contactTestBitMask = CollisionBitmask.ball.rawValue
+            cubeNode.physicsBody?.collisionBitMask = CollisionBitmask.ball.rawValue
+            cubeNode.physicsBody?.categoryBitMask = CollisionBitmask.floor.rawValue
+            ARLog.debug(cubeNode.position)
+            node.addChildNode(cubeNode)
+        }}}
         
         let ballNode = CustomPlane.baseball()
-        ballNode.position = SCNVector3Make(planeAnchor.center.x, 0.3, planeAnchor.center.z)
-        ballNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-        ballNode.physicsBody?.categoryBitMask = CollisionBitmask.ball.rawValue
+        ballNode.position = SCNVector3Make(planeAnchor.center.x, 3, planeAnchor.center.z)
         node.addChildNode(ballNode)
+        
+        lastNode = node
     }
 }
 
@@ -177,15 +184,15 @@ class ViewModel {
 
 class CustomPlane {
     
-    static func cubeXcm(size: Float) -> SCNNode {
+    static func cubeXcm(size: Float) -> (SCNNode, SCNPhysicsShape) {
         // Maaterial
         let material = SCNMaterial()
-        material.diffuse.contents = randomColor().withAlphaComponent(0.1)
+        material.diffuse.contents = randomColor().withAlphaComponent(0.3)
         // Plane
         let node = SCNNode()
-        node.geometry = SCNBox(width: CGFloat(size), height: CGFloat(size), length: CGFloat(size), chamferRadius: 0)
+        node.geometry = SCNBox(width: CGFloat(size), height: 0.03/* CGFloat(size) */, length: CGFloat(size), chamferRadius: 0)
         node.geometry?.materials = [material]
-        return node
+        return (node, SCNPhysicsShape(geometry: node.geometry!, options: nil))
     }
     
     static func greenSheet(anchor: ARPlaneAnchor) -> SCNNode {
@@ -205,7 +212,7 @@ class CustomPlane {
         return SCNNode(geometry: text)
     }
     
-    static func baseball() -> SCNNode{
+    static func baseball() -> SCNNode {
         // Maaterial
         let material = SCNMaterial()
         material.diffuse.contents = UIColor.white.withAlphaComponent(0.9)
@@ -213,6 +220,8 @@ class CustomPlane {
         let node = SCNNode()
         node.geometry = SCNSphere(radius: CGFloat(0.074))
         node.geometry?.materials = [material]
+        node.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+        node.physicsBody?.categoryBitMask = CollisionBitmask.ball.rawValue
         return node
     }
     
