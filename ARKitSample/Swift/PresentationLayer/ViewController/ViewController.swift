@@ -23,6 +23,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     private var markerMode = MarkerMode.white
     private var timer: Timer!
     private var planes: [SCNNode] = []
+    private var node: SCNNode = SCNNode()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +39,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Setup UI
         //self.recordingButton = RecordingButton(self)
+        
+        // Shadow
+        let lightNode = SCNNode()
+        let light = SCNLight()
+        lightNode.name = "light"
+        lightNode.light = light
+        sceneView.scene.rootNode.addChildNode(lightNode)
+        let ambientLight = SCNLight()
+        ambientLight.type = .ambient
+        ambientLight.intensity = 0
+        ambientLight.temperature = 0
+        sceneView.scene.rootNode.light = ambientLight
+        
+        ARLog.dumpNode(sceneView.scene.rootNode)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,6 +87,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // 計測開始
     @IBAction func beginMeasure(_ sender: Any) {
+        return
         if let position = viewModel.getCenter(sceneView) {
             for node in sceneView.scene.rootNode.childNodes {
                 node.removeFromParentNode()
@@ -80,6 +96,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             viewModel.isMeasuring = true
             
             let sphereNode = viewModel.createSphereNode(position: viewModel.startPosition, color: UIColor.red)
+            sphereNode.name = "mesure"
             sceneView.scene.rootNode.addChildNode(sphereNode)
         }
     }
@@ -94,20 +111,21 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func createBall(_ sender: Any) {
         ARLog.funcIn(); defer { ARLog.funcOut() }
-        let boxGeometry = SCNSphere(radius: CGFloat(0.05))
-//        let boxGeometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
-        let material = SCNMaterial()
-        material.diffuse.contents = UIImage(named: "block")
-        boxGeometry.materials = [material]
-        let boxNode = SCNNode(geometry: boxGeometry)
-        boxNode.position = SCNVector3(
-            0, // hitResult.worldTransform.columns.3.x,
-            0.8, // hitResult.worldTransform.columns.3.y + 0.20,
-            0 // hitResult.worldTransform.columns.3.z
-        )
-        boxNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: boxGeometry, options: nil))
-        boxNode.physicsBody?.categoryBitMask = CollisionBitmask.ball.rawValue
-        sceneView.scene.rootNode.addChildNode(boxNode)
+        
+        if let camera = sceneView.pointOfView {
+            let ballNode = CustomPlane.baseball()
+            let position = SCNVector3(x: 0, y: 5, z: 0)
+            ballNode.name = "ball"
+            ballNode.position = position
+            // ballNode.position = camera.convertPosition(position, to: nil)
+            // sceneView.scene.rootNode.addChildNode(ballNode)
+            node.addChildNode(ballNode)
+        }
+        ARLog.dumpNode(node)
+        
+        let staticBall = CustomPlane.staticBall()
+        staticBall.position = SCNVector3Make(0, 0.3, 0)
+//        sceneView.scene.rootNode.addChildNode(staticBall)r
     }
     
     // 計測中に円柱の描画を更新する
@@ -146,13 +164,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        // ARLog.funcIn(); defer { ARLog.funcOut() }
-        let node = SCNNode()
+        ARLog.funcIn(); defer { ARLog.funcOut() }
         return node
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        // ARLog.funcIn(); defer { ARLog.funcOut() }
+        ARLog.funcIn(); defer { ARLog.funcOut() }
         viewModel.renderAnchor(node, anchor)
     }
     
