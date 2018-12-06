@@ -10,24 +10,24 @@ import Foundation
 import SceneKit
 
 class ARLog {
-    
+
     public static func debug(_ obj: Any?, function: String = #function, line: Int = #line) {
         #if DEBUG
         print("\(nowDate()) [Function:\(function) Line:\(line)] \(obj ?? "")")
         #endif
     }
-    
+
     public static func funcIn(_ obj: Any? = nil, function: String = #function, line: Int = #line) {
         print("\(nowDate()) [Function:\(function) Line:\(line)] >> \(obj ?? "")")
     }
-    
+
     public static func funcOut(_ obj: Any? = nil, function: String = #function, line: Int = #line) {
         print("\(nowDate()) [Function:\(function) Line:\(line)] << \(obj ?? "")")
     }
     
     public static func dumpNode (_ node: SCNNode, function: String = #function, line: Int = #line) {
-        for n in node.childNodes {
-            ARLog.debug("\(n.name ?? "nil"): \(n.worldPosition)", function: function, line: line)
+        for cNode in node.childNodes {
+            ARLog.debug("\(cNode.name ?? "nil"): \(cNode.worldPosition)", function: function, line: line)
             // ARLog.debug("\(n.name ?? "nil"): \(n.worldTransform)", function: function, line: line)
         }
     }

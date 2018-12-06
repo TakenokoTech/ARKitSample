@@ -66,6 +66,16 @@
                                     <constraint firstAttribute="height" constant="16" id="zy8-Rm-HFO"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A6i-va-GGq">
+                                <rect key="frame" x="329" y="36" width="30" height="30"/>
+                                <color key="backgroundColor" red="0.83055375649999996" green="0.23146065769999999" blue="0.13439412040000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="REC">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <segue destination="GcD-um-EDv" kind="show" id="t2f-Td-6o6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -74,8 +84,10 @@
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="VpT-BR-CcM"/>
                             <constraint firstItem="eT2-C3-BdG" firstAttribute="centerY" secondItem="U0K-SW-4ec" secondAttribute="centerY" id="WP3-yN-ctJ"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
+                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="A6i-va-GGq" secondAttribute="trailing" constant="16" id="aSX-9f-aNe"/>
                             <constraint firstItem="Xgc-bb-vHS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" constant="16" id="fNT-0y-V1y"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="rAg-Qo-aJn" secondAttribute="trailing" constant="16" id="ggX-6I-HF8"/>
+                            <constraint firstItem="A6i-va-GGq" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="16" id="pFg-jp-kWt"/>
                             <constraint firstItem="eT2-C3-BdG" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="qhc-fy-C6u"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="bottom" secondItem="rAg-Qo-aJn" secondAttribute="bottom" constant="16" id="v8g-si-FwN"/>
@@ -92,6 +104,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="140" y="133.5832083958021"/>
+        </scene>
+        <!--Vision Controller-->
+        <scene sceneID="C43-h7-I8k">
+            <objects>
+                <viewController id="GcD-um-EDv" customClass="VisionController" customModule="ARKitSample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qGG-lj-tPJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eeL-vb-nzI">
+                                <rect key="frame" x="0.0" y="589" width="375" height="30"/>
+                                <state key="normal" title="Start"/>
+                                <connections>
+                                    <action selector="tapStartStopButton" destination="GcD-um-EDv" eventType="touchUpInside" id="OsO-HB-gne"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="zkv-3X-3t8" firstAttribute="bottom" secondItem="eeL-vb-nzI" secondAttribute="bottom" constant="48" id="88I-Fl-LZ5"/>
+                            <constraint firstItem="zkv-3X-3t8" firstAttribute="trailing" secondItem="eeL-vb-nzI" secondAttribute="trailing" id="vZo-iK-6X4"/>
+                            <constraint firstItem="eeL-vb-nzI" firstAttribute="leading" secondItem="zkv-3X-3t8" secondAttribute="leading" id="vnW-pU-SVq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zkv-3X-3t8"/>
+                    </view>
+                    <connections>
+                        <outlet property="startStopButton" destination="eeL-vb-nzI" id="Guf-vw-vP5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ed3-CF-fhY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1073" y="134"/>
         </scene>
     </scenes>
 </document>

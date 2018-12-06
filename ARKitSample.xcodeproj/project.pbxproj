@@ -18,6 +18,8 @@
 		07EE8E5721AEC21F00AA4FD8 /* ARKitSampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE8E5621AEC21F00AA4FD8 /* ARKitSampleUITests.swift */; };
 		07EE8E6B21AECED400AA4FD8 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE8E6A21AECED400AA4FD8 /* ViewModel.swift */; };
 		07EE8E6D21B0251E00AA4FD8 /* RecordingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE8E6C21B0251E00AA4FD8 /* RecordingButton.swift */; };
+		7E4D93D521B916FA006289AE /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4D93D421B916FA006289AE /* VideoViewModel.swift */; };
+		7EED442421B61511009CA1D3 /* VisionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED442321B61511009CA1D3 /* VisionController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		07EE8E5821AEC21F00AA4FD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		07EE8E6A21AECED400AA4FD8 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		07EE8E6C21B0251E00AA4FD8 /* RecordingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingButton.swift; sourceTree = "<group>"; };
+		7E4D93D421B916FA006289AE /* VideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewModel.swift; sourceTree = "<group>"; };
+		7EED442321B61511009CA1D3 /* VisionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				07EE8E3821AEC21D00AA4FD8 /* ViewController.swift */,
+				7EED442321B61511009CA1D3 /* VisionController.swift */,
 				07EE8E6C21B0251E00AA4FD8 /* RecordingButton.swift */,
 			);
 			path = ViewController;
@@ -189,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				07EE8E6A21AECED400AA4FD8 /* ViewModel.swift */,
+				7E4D93D421B916FA006289AE /* VideoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -203,6 +209,7 @@
 				07EE8E2D21AEC21D00AA4FD8 /* Sources */,
 				07EE8E2E21AEC21D00AA4FD8 /* Frameworks */,
 				07EE8E2F21AEC21D00AA4FD8 /* Resources */,
+				7E23765E21B8E962007FBCE8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -320,16 +327,38 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7E23765E21B8E962007FBCE8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		07EE8E2D21AEC21D00AA4FD8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				07EE8E3921AEC21D00AA4FD8 /* ViewController.swift in Sources */,
+				7EED442421B61511009CA1D3 /* VisionController.swift in Sources */,
 				0739A71921B2E1CA00C3B5B6 /* ARLog.swift in Sources */,
 				07EE8E6D21B0251E00AA4FD8 /* RecordingButton.swift in Sources */,
 				07EE8E6B21AECED400AA4FD8 /* ViewModel.swift in Sources */,
 				07EE8E3521AEC21D00AA4FD8 /* AppDelegate.swift in Sources */,
+				7E4D93D521B916FA006289AE /* VideoViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

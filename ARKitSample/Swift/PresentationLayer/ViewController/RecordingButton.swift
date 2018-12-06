@@ -23,8 +23,8 @@ extension RecordingButton: RPPreviewViewControllerDelegate {
 
 class RecordingButton: UIButton {
     var isRecording = false
-    let height:CGFloat = 50.0
-    let width:CGFloat = 100.0
+    let height: CGFloat = 50.0
+    let width: CGFloat = 100.0
     let viewController: UIViewController!
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,16 +34,16 @@ class RecordingButton: UIButton {
     init(_ viewController: UIViewController) {
         self.viewController = viewController
         
-        super.init(frame: CGRect(x:0, y:0, width:width, height:height))
+        super.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
         
         //        layer.position = CGPoint(x: viewController.view.frame.width/2, y:viewController.view.frame.height - height)
-        layer.position = CGPoint(x: width/2, y:viewController.view.frame.height - height)
+        layer.position = CGPoint(x: width/2, y: viewController.view.frame.height - height)
         
         layer.cornerRadius = 10
         layer.borderWidth = 1
         setTitleColor(UIColor.white, for: .normal)
         
-        addTarget(self, action: #selector(tapped), for:.touchUpInside)
+        addTarget(self, action: #selector(tapped), for: .touchUpInside)
         
         setAppearance()
         viewController.view.addSubview(self)
@@ -57,7 +57,7 @@ class RecordingButton: UIButton {
             })
         } else {
             isRecording = false
-            RPScreenRecorder.shared().stopRecording(handler: { (previewViewController, error) in
+            RPScreenRecorder.shared().stopRecording(handler: { (previewViewController, _) in
                 previewViewController?.previewControllerDelegate = self
                 self.viewController.present(previewViewController!, animated: true, completion: nil)
             })
@@ -65,9 +65,8 @@ class RecordingButton: UIButton {
         setAppearance()
     }
     
-    
     func setAppearance() {
-        var alpha:CGFloat = 1.0
+        var alpha: CGFloat = 1.0
         var title = "REC"
         if isRecording {
             title = ""

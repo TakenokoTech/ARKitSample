@@ -27,7 +27,7 @@ protocol IViewModel {
     
 }
 
-class ViewModel : IViewModel {
+class ViewModel: IViewModel {
     
     private var _startPosition: SCNVector3!
     private var _isMeasuring = false
@@ -70,7 +70,7 @@ class ViewModel : IViewModel {
     }
     
     // 円柱のノードの作成
-    func createCylinderNode(startPosition: SCNVector3, endPosition: SCNVector3, radius: CGFloat , color: UIColor, transparency: CGFloat) -> SCNNode {
+    func createCylinderNode(startPosition: SCNVector3, endPosition: SCNVector3, radius: CGFloat, color: UIColor, transparency: CGFloat) -> SCNNode {
         let height = CGFloat(GLKVector3Distance(SCNVector3ToGLKVector3(startPosition), SCNVector3ToGLKVector3(endPosition)))
         let cylinderNode = SCNNode()
         cylinderNode.eulerAngles.x = Float(Double.pi / 2)
@@ -81,7 +81,7 @@ class ViewModel : IViewModel {
         cylinderNode.addChildNode(cylinder)
         let node = SCNNode()
         let targetNode = SCNNode()
-        if (startPosition.z < 0.0 && endPosition.z > 0.0) {
+        if startPosition.z < 0.0 && endPosition.z > 0.0 {
             node.position = endPosition
             targetNode.position = startPosition
         } else {
@@ -100,7 +100,7 @@ class ViewModel : IViewModel {
         if let endPosition = getCenter(sceneView) {
             let sphereNode = createSphereNode(position: endPosition, color: UIColor.red)
             sceneView.scene.rootNode.addChildNode(sphereNode)
-            let centerPosition = Center(startPosition: startPosition, endPosition: endPosition)
+            let centerPosition = center(startPosition: startPosition, endPosition: endPosition)
             let centerSphereNode = createSphereNode(position: centerPosition, color: UIColor.orange)
             sceneView.scene.rootNode.addChildNode(centerSphereNode)
             let lineNode = createLineNode(startPosition: startPosition, endPosition: endPosition, color: UIColor.white)
@@ -122,15 +122,15 @@ class ViewModel : IViewModel {
     }
     
     // 2点間の中心座標を取得する
-    func Center(startPosition: SCNVector3, endPosition: SCNVector3) -> SCNVector3 {
-        let x = endPosition.x - startPosition.x
-        let y = endPosition.y - startPosition.y
-        let z = endPosition.z - startPosition.z
-        return SCNVector3Make(endPosition.x - x/2, endPosition.y - y/2, endPosition.z - z/2)
+    func center(startPosition: SCNVector3, endPosition: SCNVector3) -> SCNVector3 {
+        let subX = endPosition.x - startPosition.x
+        let subY = endPosition.y - startPosition.y
+        let subZ = endPosition.z - startPosition.z
+        return SCNVector3Make(endPosition.x - subX/2, endPosition.y - subY/2, endPosition.z - subZ/2)
     }
     
     // 円柱の更新
-    func refreshCylinderNode(_ sceneView: ARSCNView,endPosition: SCNVector3) {
+    func refreshCylinderNode(_ sceneView: ARSCNView, endPosition: SCNVector3) {
         if let node = cylinderNode {
             node.removeFromParentNode()
         }
@@ -151,15 +151,15 @@ class ViewModel : IViewModel {
         planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
         planeNode.transform =  SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
         parentNode.addChildNode(planeNode)
-
+        
         let textNode = CustomPlane.text(anchor: planeAnchor)
         textNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
         textNode.transform =  SCNMatrix4MakeRotation(/* -Float.pi / 2 */0, 0.3, 0, 0)
         // parentNode.addChildNode(textNode)
-    
-        let size: Float = 1 ;
+        
+        let size: Float = 1
         for indexX in 0...0 { for indexY in 0...0 { for indexZ in 0...0 {
-        // for indexX in -2...2 { for indexY in 0...0 { for indexZ in -2...2 {
+            // for indexX in -2...2 { for indexY in 0...0 { for indexZ in -2...2 {
             let cubeNode = CustomPlane.cubeXcm(size: size)
             cubeNode.name = "box"
             cubeNode.position = SCNVector3Make(planeAnchor.center.x + Float(indexX) * size, Float(indexY)*size, planeAnchor.center.z + Float(indexZ)*size)
@@ -197,25 +197,25 @@ class CustomPlane {
     
     static func greenSheet(anchor: ARPlaneAnchor) -> SCNNode {
         // Maaterial
-        let planeMaterial = SCNMaterial()
-        planeMaterial.diffuse.contents = UIColor.green.withAlphaComponent(1)
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.green.withAlphaComponent(1)
         // Plane
         let node = SCNNode()
         // node.geometry = SCNPlane(width: CGFloat(anchor.extent.x), height: CGFloat(anchor.extent.z))
         node.geometry = SCNBox(width: CGFloat(anchor.extent.x), height: CGFloat(anchor.extent.z), length: 0.1, chamferRadius: 0)
-        node.geometry?.materials = [planeMaterial]
+        node.geometry?.materials = [material]
         // PhysicsBody
         node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
         node.physicsBody?.contactTestBitMask = CollisionBitmask.ball.rawValue
         node.physicsBody?.collisionBitMask = CollisionBitmask.ball.rawValue
         node.physicsBody?.categoryBitMask = CollisionBitmask.floor.rawValue
-        return node;
+        return node
     }
     
     static func text(anchor: ARPlaneAnchor) -> SCNNode {
         let pos = String.init(format: "( %.2f, %.2f)", arguments: [CGFloat(anchor.extent.x), CGFloat(anchor.extent.z)])
         let text = SCNText(string: pos, extrusionDepth: 0.001)
-        text.font = UIFont(name: "HiraKakuProN-W6", size: 0.1);
+        text.font = UIFont(name: "HiraKakuProN-W6", size: 0.1)
         return SCNNode(geometry: text)
     }
     
@@ -236,7 +236,7 @@ class CustomPlane {
     static func staticBall () -> SCNNode {
         // Maaterial
         let material = SCNMaterial()
-//        material.diffuse.contents = UIColor.yellow.withAlphaComponent(0.5)
+        //        material.diffuse.contents = UIColor.yellow.withAlphaComponent(0.5)
         // Plane
         let node = SCNNode()
         node.geometry = SCNSphere(radius: CGFloat(0.1))
@@ -244,7 +244,7 @@ class CustomPlane {
         node.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
         return node
     }
-
+    
     private static func randomColor() -> UIColor {
         switch Int.random(in: 1 ... 1) {
         case 1: return UIColor.red
@@ -259,6 +259,3 @@ class CustomPlane {
         }
     }
 }
-
-
-

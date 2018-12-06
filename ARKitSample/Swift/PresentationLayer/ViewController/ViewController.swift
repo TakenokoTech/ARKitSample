@@ -10,6 +10,7 @@ import UIKit
 import SceneKit
 import ARKit
 import AVKit
+import Vision
 
 class ViewController: UIViewController, ARSCNViewDelegate {
     
@@ -71,6 +72,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // MARK: - IBAction
     
+    //
     @IBAction func tapToggleMaker(_ sender: Any) {
         switch markerMode {
         case .white:
@@ -88,31 +90,34 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // 計測開始
     @IBAction func beginMeasure(_ sender: Any) {
         return
-        if let position = viewModel.getCenter(sceneView) {
-            for node in sceneView.scene.rootNode.childNodes {
-                node.removeFromParentNode()
-            }
-            viewModel.startPosition = position
-            viewModel.isMeasuring = true
-            
-            let sphereNode = viewModel.createSphereNode(position: viewModel.startPosition, color: UIColor.red)
-            sphereNode.name = "mesure"
-            sceneView.scene.rootNode.addChildNode(sphereNode)
-        }
+//        if let position = viewModel.getCenter(sceneView) {
+//            for node in sceneView.scene.rootNode.childNodes {
+//                node.removeFromParentNode()
+//            }
+//            viewModel.startPosition = position
+//            viewModel.isMeasuring = true
+//
+//            let sphereNode = viewModel.createSphereNode(position: viewModel.startPosition, color: UIColor.red)
+//            sphereNode.name = "mesure"
+//            sceneView.scene.rootNode.addChildNode(sphereNode)
+//        }
     }
     
+    //
     @IBAction func touchUpInside(_ sender: Any) {
         viewModel.endMeasure(sceneView)
     }
     
+    //
     @IBAction func touchUpOutside(_ sender: Any) {
         viewModel.endMeasure(sceneView)
     }
     
+    //
     @IBAction func createBall(_ sender: Any) {
         ARLog.funcIn(); defer { ARLog.funcOut() }
         
-        if let camera = sceneView.pointOfView {
+        if nil != sceneView.pointOfView {
             let ballNode = CustomPlane.baseball()
             let position = SCNVector3(x: 0, y: 5, z: 0)
             ballNode.name = "ball"
@@ -129,7 +134,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     // 計測中に円柱の描画を更新する
-    @objc func update(tm: Timer) {
+    @objc func update(timer: Timer) {
         if viewModel.isMeasuring {
             if let endPosition = viewModel.getCenter(sceneView) {
                 let position = SCNVector3Make(
@@ -147,6 +152,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // MARK: - ARSCNViewDelegate
     
+    //
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         // ARLog.funcIn(); defer { ARLog.funcOut() }
         guard let cuptureImage = sceneView.session.currentFrame?.capturedImage else {
@@ -154,28 +160,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         // PixelBuffer を CIImage に変換しフィルターをかける
         let ciImage = CIImage.init(cvPixelBuffer: cuptureImage)
-        let filter:CIFilter = CIFilter(name: "CIEdges")!
+        let filter: CIFilter = CIFilter(name: "CIEdges")!
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         //　カメラ画像はホーム右のランドスケープの状態で画像が渡されるため、CGImagePropertyOrientation(rawValue: 6) でポートレートで正しい向きに表示されるよう変換
         let result = filter.outputImage!.oriented(CGImagePropertyOrientation(rawValue: 6)!)
-        if let cgImage = CIContext().createCGImage(result, from: result.extent) {
+        if CIContext().createCGImage(result, from: result.extent) != nil {
             // sceneView.scene.background.contents = cgImage
         }
     }
     
+    //
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         ARLog.funcIn(); defer { ARLog.funcOut() }
         return node
     }
     
+    //
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         ARLog.funcIn(); defer { ARLog.funcOut() }
         viewModel.renderAnchor(node, anchor)
     }
     
+    //
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
     }
-    
+        
     func session(_ session: ARSession, didFailWithError error: Error) {
     }
     
@@ -185,4 +194,3 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
     }
 }
-
